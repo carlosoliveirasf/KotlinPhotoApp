@@ -1,13 +1,13 @@
-package com.project.shoes.photoapp
+package com.project.shoes.photoapp.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageView
 import android.support.v7.widget.Toolbar
 import com.bumptech.glide.Glide
+import com.project.shoes.photoapp.R
 import com.project.shoes.photoapp.models.Photo
 import kotlinx.android.synthetic.main.activity_detail.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 class DetailActivity : AppCompatActivity() {
 
@@ -17,7 +17,7 @@ class DetailActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
-        val ImageView = findViewById<ImageView>(R.id.imageView) as ImageView
+        val imageView = findViewById<ImageView>(R.id.imageView) as ImageView
         val photo = intent.getSerializableExtra(PHOTO) as Photo?
 
         photo?.webformatURL.let {

@@ -1,4 +1,4 @@
-package com.project.shoes.photoapp
+package com.project.shoes.photoapp.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,17 +7,17 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.View
-import com.project.shoes.photoapp.api.PhotoRetriever
+import com.project.shoes.photoapp.R
+import com.project.shoes.photoapp.abstracts.MainView
 import com.project.shoes.photoapp.models.Photo
 import com.project.shoes.photoapp.models.PhotoList
+import com.project.shoes.photoapp.presenter.MainPresenter
 import kotlinx.android.synthetic.main.activity_main.*
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Response
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, MainView {
     var photos: List<Photo>? = null
-
+    val presenter : MainPresenter? = MainPresenter(this)
     var mainAdapter : MainAdapter? = null
     lateinit var recyclerView : RecyclerView
 
@@ -34,23 +34,20 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setSupportActionBar(toolbar)
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+        callBack()
+    }
 
-        var retriever = PhotoRetriever()
+    override fun callBack(){
+        presenter?.call()
+    }
 
-        val callback = object : Callback<PhotoList>{
-            override fun onFailure(call: Call<PhotoList>?, t: Throwable?) {
-                Log.e("MainActivity", "Problems calling API", t)
-            }
+    override fun sucess(response : Response<PhotoList>?) {
+        this@MainActivity.photos = response?.body()?.hits
+        mainAdapter = MainAdapter(this@MainActivity.photos!!, this@MainActivity)
+        recyclerView.adapter = mainAdapter
+    }
 
-            override fun onResponse(call: Call<PhotoList>?, response: Response<PhotoList>?) {
-                response?.isSuccessful.let {
-                    this@MainActivity.photos = response?.body()?.hits
-                    mainAdapter = MainAdapter(this@MainActivity.photos!!, this@MainActivity)
-                    recyclerView.adapter = mainAdapter
-                }
-            }
-        }
-        retriever.getPhotos(callback)
-
+    override fun failure() {
+        Log.e("MainActivity", "Problems calling API")
     }
 }

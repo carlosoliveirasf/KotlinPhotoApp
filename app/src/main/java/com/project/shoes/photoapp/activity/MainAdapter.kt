@@ -1,7 +1,5 @@
-package com.project.shoes.photoapp
+package com.project.shoes.photoapp.activity
 
-import android.provider.ContactsContract
-import android.support.v7.view.menu.ActionMenuItemView
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.project.shoes.photoapp.R
 import com.project.shoes.photoapp.models.Photo
-import java.text.FieldPosition
 
 /**
  * Created by carlos on 1/8/18.
